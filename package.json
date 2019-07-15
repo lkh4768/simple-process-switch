@@ -5,7 +5,8 @@
   "main": "src/index.js",
   "scripts": {
     "test": "jest",
-    "git:commit": "npm test && git add --all && git commit"
+		"lint": "eslint src",
+    "git:commit": "npm run lint && npm test && git add --all && git commit"
   },
   "repository": {
     "type": "git",
@@ -22,6 +23,7 @@
   "homepage": "https://github.com/lkh4768/simple-process-switch#readme",
   "dependencies": {},
   "devDependencies": {
+    "eslint": "^6.0.1",
     "jest": "^24.8.0"
   }
 }
