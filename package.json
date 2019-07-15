@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "test": "jest",
-		"git:commit": "npm test && git add --all && git commit"
+    "git:commit": "npm test && git add --all && git commit"
   },
   "repository": {
     "type": "git",
@@ -20,7 +20,8 @@
     "url": "https://github.com/lkh4768/simple-process-switch/issues"
   },
   "homepage": "https://github.com/lkh4768/simple-process-switch#readme",
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
     "jest": "^24.8.0"
   }
 }
