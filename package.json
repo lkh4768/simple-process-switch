@@ -4,7 +4,8 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+		"git:commit": "npm test && git add --all && git commit"
   },
   "repository": {
     "type": "git",
@@ -18,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/lkh4768/simple-process-switch/issues"
   },
-  "homepage": "https://github.com/lkh4768/simple-process-switch#readme"
+  "homepage": "https://github.com/lkh4768/simple-process-switch#readme",
+  "dependencies": {
+    "jest": "^24.8.0"
+  }
 }
