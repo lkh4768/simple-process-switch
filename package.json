@@ -5,8 +5,9 @@
   "main": "src/index.js",
   "scripts": {
     "test": "jest",
-		"lint": "eslint src",
-		"lint:report": "npm run lint -- -f json -o ./reports/lint/report.json",
+    "test:report": "npm run test -- --coverage",
+    "lint": "eslint src",
+    "lint:report": "npm run lint -- -f json -o ./reports/lint/report.json",
     "git:commit": "npm run lint && npm test && git add --all && git commit"
   },
   "repository": {
@@ -25,6 +26,16 @@
   "dependencies": {},
   "devDependencies": {
     "eslint": "^6.0.1",
-    "jest": "^24.8.0"
+    "jest": "^24.8.0",
+    "jest-sonar-reporter": "^2.0.0"
+  },
+	"jest": {
+    "testResultsProcessor": "jest-sonar-reporter",
+		"coverageReporters": ["lcov"],
+		"coverageDirectory": "reports/unittest/coverage"
+  },
+	"jestSonar": {
+    "reportPath": "reports/unittest",
+    "reportFile": "report.xml"
   }
 }
