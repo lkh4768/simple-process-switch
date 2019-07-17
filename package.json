@@ -36,6 +36,7 @@
   },
 	"jestSonar": {
     "reportPath": "reports/unittest",
-    "reportFile": "report.xml"
+    "reportFile": "report.xml",
+		"indent": 4
   }
 }
