@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest",
 		"lint": "eslint src",
-		"lint:report": "eslint src -f json -o ./reports/lint/report.json",
+		"lint:report": "npm run lint -- -f json -o ./reports/lint/report.json",
     "git:commit": "npm run lint && npm test && git add --all && git commit"
   },
   "repository": {
