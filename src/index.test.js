@@ -6,7 +6,7 @@ describe('main', () => {
 
 	test('Run command by key', async () => {
 		cmdCtrl.runByKey = jest.fn().mockResolvedValue(true);
-		cmdCtrl.read = jest.fn().mockResolvedValue(true);
+		cmdCtrl.read = jest.fn().mockResolvedValue({});
 		const ret = await sps.main(key);
 
 		expect(cmdCtrl.read).toHaveBeenCalledTimes(1);
