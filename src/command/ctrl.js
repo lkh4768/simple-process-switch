@@ -1,4 +1,10 @@
 const childProcess = require('child_process');
+const {promises: fsPromises} = require('fs');
+const path = require('path');
+
+const config = require('../config');
+
+exports.LOG_EXT = 'log';
 
 exports.read = () => ({
   test: 'ps -ef',
@@ -7,7 +13,10 @@ exports.read = () => ({
 exports.runByKey = (key, cmds) => {
   const cmd = cmds[key];
   const argsOfSpawn = exports.parseCmdToArgsOfSpawn(cmd);
-  return childProcess.spawn(argsOfSpawn.cmd, argsOfSpawn.args);
+  const logFd = exports.openLogFileUsingKey(key);
+  return childProcess.spawn(argsOfSpawn.cmd, argsOfSpawn.args, {
+    stdio: [0, logFd, logFd],
+  });
 };
 
 exports.parseCmdToArgsOfSpawn = cmd => {
@@ -18,4 +27,18 @@ exports.parseCmdToArgsOfSpawn = cmd => {
   const [first, ...rest] = cmd.split(' ');
 
   return {cmd: first, args: [...rest]};
+};
+
+exports.openLogFileUsingKey = async key => {
+  const logFile = exports.genLogPathUsingKey(key);
+  const fd = await fsPromises.open(logFile);
+  return fd;
+};
+
+exports.genLogPathUsingKey = async key => {
+  const configPath = await config.getPath();
+  return path.join(
+    configPath,
+    `${key}_${new Date().getTime()}.${exports.LOG_EXT}`,
+  );
 };
