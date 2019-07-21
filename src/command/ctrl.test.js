@@ -1,6 +1,6 @@
 const cmdCtrl = require('./ctrl');
 
-describe('main', () => {
+describe('command/ctrl', () => {
 	test('Read config', () => {
 		const ret = cmdCtrl.read();
 
