@@ -57,7 +57,7 @@ describe('command/ctrl', () => {
 			const cmd = cmds.join(' ');
 			const ret = cmdCtrl.parseCmdToArgsOfSpawn(cmd);
 
-			expect(ret).toEqual(cmds);
+			expect(ret).toEqual({ cmd: cmds[0], args: [cmds[1]] });
 		});
 	});
 });

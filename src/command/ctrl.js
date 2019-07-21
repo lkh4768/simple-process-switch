@@ -12,5 +12,7 @@ exports.parseCmdToArgsOfSpawn = cmd => {
 		throw new Error('Invalid cmd type');
 	}
 
-	return cmd.split(' ');
+	const [ first, ...rest ] = cmd.split(' ');
+
+	return { cmd: first, args: [ ...rest ] };
 };
