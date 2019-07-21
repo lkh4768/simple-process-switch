@@ -5,7 +5,6 @@ exports.read = () => ({
 });
 
 exports.runByKey = (key, cmds) => {
-	console.log({ key, cmds });
 	const cmd = cmds[key];
 	const argsOfSpawn = exports.parseCmdToArgsOfSpawn(cmd);
 	return childProcess.spawn(argsOfSpawn.cmd, argsOfSpawn.args);
