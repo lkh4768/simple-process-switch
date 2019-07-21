@@ -1,12 +1,12 @@
-const cmdCtrl = require('./command/ctrl');
 const sps = require('./index');
+const cmdCtrl = require('./command/ctrl');
 
 describe('main', () => {
 	const key = 'key_1';
 
 	test('Run command by key', async () => {
-		cmdCtrl.runByKey = jest.fn().mockResolvedValue(true);
-		cmdCtrl.read = jest.fn().mockResolvedValue({});
+		cmdCtrl.read = jest.fn().mockReturnValue({});
+		cmdCtrl.runByKey = jest.fn().mockReturnValue(true);
 		const ret = await sps.main(key);
 
 		expect(cmdCtrl.read).toHaveBeenCalledTimes(1);

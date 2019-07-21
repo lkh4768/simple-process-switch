@@ -1,12 +1,14 @@
 const cmdCtrl = require('./command/ctrl');
-const key = process.argv[1];
 
-const main = async (key) => {
-	const cmds = await cmdCtrl.read();
-	const ret = await cmdCtrl.runByKey(key, cmds);
+const main = key => {
+	const cmds = cmdCtrl.read();
+	const ret = cmdCtrl.runByKey(key, cmds);
 	return ret;
 };
 
-main(key);
+const isDev = process.env.NODE_ENV === 'development';
+if (!isDev) {
+	main(process.argv[2]);
+}
 
 exports.main = main;

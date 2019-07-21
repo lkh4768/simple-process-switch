@@ -1,5 +1,6 @@
 const cmdCtrl = require('./ctrl');
 const childProcess = require('child_process');
+const _ = require('lodash');
 
 describe('command/ctrl', () => {
 	describe('read', () => {
@@ -7,10 +8,7 @@ describe('command/ctrl', () => {
 			const ret = cmdCtrl.read();
 
 			expect(ret).toEqual({
-				test: {
-					sudo: true,
-					command: 'ps -ef'
-				}
+				test: 'ps -ef',
 			});
 		});
 	});
@@ -24,14 +22,24 @@ describe('command/ctrl', () => {
 		};
 		const rawCmd = `${data.cmd} ${data.args[0]}`;
 
+		afterEach(() => {
+			jest.restoreAllMocks();
+		});
+
 		test('Ensure that command seperated by cmd and args', () => {
 			const commands = {
-				[data.key]: { sudo: true, command: rawCmd }
+				[data.key]: rawCmd
 			};
+			const expectedRet = {};
 
-			childProcess.spawn = jest.fn().mockReturnValue({});
+			const mockParseCmdToArgsOfSpawn = jest.spyOn(cmdCtrl, 'parseCmdToArgsOfSpawn').mockReturnValue(_.pick(data, ['cmd', 'args']));
+			const mockSpawn = jest.spyOn(childProcess, 'spawn').mockReturnValue(expectedRet);
 
-			cmdCtrl.runByKey(data.key, commands);
+			const ret = cmdCtrl.runByKey(data.key, commands);
+
+			expect(mockParseCmdToArgsOfSpawn).toHaveBeenCalledTimes(1);
+			expect(mockSpawn).toHaveBeenCalledTimes(1);
+			expect(ret).toEqual(expectedRet);
 		});
 	});
 
