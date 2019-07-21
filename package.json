@@ -4,7 +4,11 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "NODE_ENV=development jest",
+    "test:report": "NODE_ENV=development npm run test -- --coverage",
+    "lint": "eslint src",
+    "lint:report": "npm run lint -- -f json -o ./reports/lint/report.json",
+    "git:commit": "npm run lint && npm test && git add --all && git commit"
   },
   "repository": {
     "type": "git",
@@ -18,5 +22,25 @@
   "bugs": {
     "url": "https://github.com/lkh4768/simple-process-switch/issues"
   },
-  "homepage": "https://github.com/lkh4768/simple-process-switch#readme"
+  "homepage": "https://github.com/lkh4768/simple-process-switch#readme",
+  "dependencies": {
+    "lodash": "^4.17.15"
+  },
+  "devDependencies": {
+    "eslint": "^6.0.1",
+    "jest": "^24.8.0",
+    "jest-sonar-reporter": "^2.0.0"
+  },
+  "jest": {
+    "testResultsProcessor": "jest-sonar-reporter",
+    "coverageReporters": [
+      "lcov"
+    ],
+    "coverageDirectory": "reports/unittest/coverage"
+  },
+  "jestSonar": {
+    "reportPath": "reports/unittest",
+    "reportFile": "report.xml",
+    "indent": 4
+  }
 }
