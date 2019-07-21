@@ -2,8 +2,7 @@ const cmdCtrl = require('./command/ctrl');
 
 const main = key => {
   const cmds = cmdCtrl.read();
-  const cp = cmdCtrl.runByKey(key, cmds);
-  cmdCtrl.logging(key, cp);
+  cmdCtrl.runByKey(key, cmds);
 };
 
 const isDev = process.env.NODE_ENV === 'development';
