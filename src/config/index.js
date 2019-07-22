@@ -1,7 +1,10 @@
 const path = require('path');
 const {promises: fsPromises} = require('fs');
 
-exports.ROOT_PATH = path.join('~/', '.sps/');
+exports.ROOT_PATH = path.join(
+  process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE,
+  '.sps/',
+);
 
 exports.getRootPath = async () => {
   const isExistsRoot = await exports.existsRoot();
@@ -15,7 +18,6 @@ exports.existsRoot = async () => {
   try {
     await fsPromises.access(exports.ROOT_PATH);
   } catch (err) {
-    console.log('Fail to access root', {error: err});
     return false;
   }
   return true;
