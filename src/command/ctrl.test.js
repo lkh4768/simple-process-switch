@@ -2,6 +2,7 @@ const childProcess = require('child_process');
 const {promises: fsPromises} = require('fs');
 const _ = require('lodash');
 const path = require('path');
+const MockDate = require('mockdate');
 
 const cmdCtrl = require('./ctrl');
 const config = require('../config');
@@ -15,6 +16,7 @@ describe('command/ctrl', () => {
 
   afterEach(() => {
     jest.restoreAllMocks();
+    MockDate.reset();
   });
 
   describe('read', () => {
@@ -103,6 +105,9 @@ describe('command/ctrl', () => {
   describe('genLogPathUsingKey', () => {
     test('Generate log file using key', async () => {
       const configPath = path.resolve('./');
+      const dateStr = '2019-05-14T11:01:58.135Z';
+      const date = new Date(dateStr);
+      MockDate.set(date);
 
       config.getRootPath = jest.fn().mockResolvedValue(configPath);
 
@@ -112,7 +117,7 @@ describe('command/ctrl', () => {
       expect(logPath).toEqual(
         path.join(
           configPath,
-          `${data.key}_${new Date().getTime()}.${cmdCtrl.LOG_EXT}`,
+          `${data.key}_${date.getTime()}.${cmdCtrl.LOG_EXT}`,
         ),
       );
     });
