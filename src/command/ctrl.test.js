@@ -32,7 +32,7 @@ describe('command/ctrl', () => {
   describe('runByKey', () => {
     const rawCmd = `${data.cmd} ${data.args[0]}`;
 
-    test('Run command', () => {
+    test('Run command', async () => {
       const commands = {
         [data.key]: rawCmd,
       };
@@ -48,7 +48,7 @@ describe('command/ctrl', () => {
         .spyOn(cmdCtrl, 'openLogFileUsingKey')
         .mockResolvedValue(`./${data.key}`);
 
-      const ret = cmdCtrl.runByKey(data.key, commands);
+      const ret = await cmdCtrl.runByKey(data.key, commands);
 
       expect(mockParseCmdToArgsOfSpawn).toHaveBeenCalledTimes(1);
       expect(mockSpawn).toHaveBeenCalledTimes(1);

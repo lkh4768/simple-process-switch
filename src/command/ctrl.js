@@ -10,10 +10,10 @@ exports.read = () => ({
   test: 'ps -ef',
 });
 
-exports.runByKey = (key, cmds) => {
+exports.runByKey = async (key, cmds) => {
   const cmd = cmds[key];
   const argsOfSpawn = exports.parseCmdToArgsOfSpawn(cmd);
-  const logFd = exports.openLogFileUsingKey(key);
+  const logFd = await exports.openLogFileUsingKey(key);
   return childProcess.spawn(argsOfSpawn.cmd, argsOfSpawn.args, {
     stdio: [0, logFd, logFd],
   });
@@ -30,7 +30,7 @@ exports.parseCmdToArgsOfSpawn = cmd => {
 };
 
 exports.openLogFileUsingKey = async key => {
-  const logFile = exports.genLogPathUsingKey(key);
+  const logFile = await exports.genLogPathUsingKey(key);
   const fd = await fsPromises.open(logFile, 'w+');
   return fd;
 };
