@@ -1,1 +1,1 @@
-exports.getPath = () => {};
+exports.getRootPath = () => {};

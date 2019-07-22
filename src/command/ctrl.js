@@ -31,12 +31,12 @@ exports.parseCmdToArgsOfSpawn = cmd => {
 
 exports.openLogFileUsingKey = async key => {
   const logFile = exports.genLogPathUsingKey(key);
-  const fd = await fsPromises.open(logFile);
+  const fd = await fsPromises.open(logFile, 'w+');
   return fd;
 };
 
 exports.genLogPathUsingKey = async key => {
-  const configPath = await config.getPath();
+  const configPath = await config.getRootPath();
   return path.join(
     configPath,
     `${key}_${new Date().getTime()}.${exports.LOG_EXT}`,

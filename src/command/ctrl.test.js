@@ -104,11 +104,11 @@ describe('command/ctrl', () => {
     test('Generate log file using key', async () => {
       const configPath = path.resolve('./');
 
-      config.getPath = jest.fn().mockResolvedValue(configPath);
+      config.getRootPath = jest.fn().mockResolvedValue(configPath);
 
       const logPath = await cmdCtrl.genLogPathUsingKey(data.key);
 
-      expect(config.getPath).toHaveBeenCalledTimes(1);
+      expect(config.getRootPath).toHaveBeenCalledTimes(1);
       expect(logPath).toEqual(
         path.join(
           configPath,
