@@ -9,10 +9,6 @@ const utils = require('../utils');
 exports.LOG_EXT = 'log';
 exports.LOG_DIR_NAME = 'log';
 
-exports.read = () => ({
-  test: 'ps -ef',
-});
-
 exports.runByKey = async (key, cmds) => {
   const cmd = cmds[key];
   const argsOfSpawn = exports.parseCmdToArgsOfSpawn(cmd);

@@ -21,16 +21,6 @@ describe('command/ctrl', () => {
     jest.restoreAllMocks();
   });
 
-  describe('read', () => {
-    test('Read config', () => {
-      const ret = cmdCtrl.read();
-
-      expect(ret).toEqual({
-        test: 'ps -ef',
-      });
-    });
-  });
-
   describe('runByKey', () => {
     const rawCmd = `${data.cmd} ${data.args[0]}`;
 
