@@ -4,6 +4,7 @@ const path = require('path');
 const uuid = require('uuid/v1');
 
 const config = require('../config');
+const utils = require('../utils');
 
 exports.LOG_EXT = 'log';
 exports.LOG_DIR_NAME = 'log';
@@ -39,8 +40,7 @@ exports.openLogFileUsingKey = async key => {
 
 exports.genLogPathUsingKey = async key => {
   const configPath = await config.getRootPath();
-  await exports.makeLogDir();
-  return path.join(configPath, `${key}_${uuid()}.${exports.LOG_EXT}`);
+  const logDirPath = path.join(configPath, exports.LOG_DIR_NAME);
+  await utils.mkdirfp(logDirPath);
+  return path.join(logDirPath, `${key}_${uuid()}.${exports.LOG_EXT}`);
 };
-
-exports.makeLogDir = async () => {};

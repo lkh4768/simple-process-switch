@@ -4,6 +4,7 @@ const _ = require('lodash');
 const path = require('path');
 const uuid = require('uuid/v1');
 
+const utils = require('../utils');
 const cmdCtrl = require('./ctrl');
 const config = require('../config');
 
@@ -109,22 +110,20 @@ describe('command/ctrl', () => {
       const uuidRet = 'uuid';
 
       config.getRootPath = jest.fn().mockResolvedValue(configPath);
-      const mockMakeLogDir = jest
-        .spyOn(cmdCtrl, 'makeLogDir')
-        .mockResolvedValue();
+      utils.mkdirfp = jest.fn().mockResolvedValue();
       uuid.mockReturnValue(uuidRet);
 
       const logPath = await cmdCtrl.genLogPathUsingKey(data.key);
 
       expect(config.getRootPath).toHaveBeenCalledTimes(1);
-      expect(mockMakeLogDir).toHaveBeenCalledTimes(1);
+      expect(utils.mkdirfp).toHaveBeenCalledTimes(1);
       expect(logPath).toEqual(
-        path.join(configPath, `${data.key}_${uuidRet}.${cmdCtrl.LOG_EXT}`),
+        path.join(
+          configPath,
+          cmdCtrl.LOG_DIR_NAME,
+          `${data.key}_${uuidRet}.${cmdCtrl.LOG_EXT}`,
+        ),
       );
     });
-  });
-
-  describe('makeLogDir', () => {
-    test('Make log dir', async () => {});
   });
 });
