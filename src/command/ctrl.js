@@ -1,10 +1,12 @@
 const childProcess = require('child_process');
 const {promises: fsPromises} = require('fs');
 const path = require('path');
+const uuid = require('uuid/v1');
 
 const config = require('../config');
 
 exports.LOG_EXT = 'log';
+exports.LOG_DIR_NAME = 'log';
 
 exports.read = () => ({
   test: 'ps -ef',
@@ -37,8 +39,8 @@ exports.openLogFileUsingKey = async key => {
 
 exports.genLogPathUsingKey = async key => {
   const configPath = await config.getRootPath();
-  return path.join(
-    configPath,
-    `${key}_${new Date().getTime()}.${exports.LOG_EXT}`,
-  );
+  await exports.makeLogDir();
+  return path.join(configPath, `${key}_${uuid()}.${exports.LOG_EXT}`);
 };
+
+exports.makeLogDir = async () => {};

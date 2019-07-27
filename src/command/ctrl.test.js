@@ -2,10 +2,12 @@ const childProcess = require('child_process');
 const {promises: fsPromises} = require('fs');
 const _ = require('lodash');
 const path = require('path');
-const MockDate = require('mockdate');
+const uuid = require('uuid/v1');
 
 const cmdCtrl = require('./ctrl');
 const config = require('../config');
+
+jest.mock('uuid/v1');
 
 describe('command/ctrl', () => {
   const data = {
@@ -16,7 +18,6 @@ describe('command/ctrl', () => {
 
   afterEach(() => {
     jest.restoreAllMocks();
-    MockDate.reset();
   });
 
   describe('read', () => {
@@ -105,21 +106,25 @@ describe('command/ctrl', () => {
   describe('genLogPathUsingKey', () => {
     test('Generate log file using key', async () => {
       const configPath = path.resolve('./');
-      const dateStr = '2019-05-14T11:01:58.135Z';
-      const date = new Date(dateStr);
-      MockDate.set(date);
+      const uuidRet = 'uuid';
 
       config.getRootPath = jest.fn().mockResolvedValue(configPath);
+      const mockMakeLogDir = jest
+        .spyOn(cmdCtrl, 'makeLogDir')
+        .mockResolvedValue();
+      uuid.mockReturnValue(uuidRet);
 
       const logPath = await cmdCtrl.genLogPathUsingKey(data.key);
 
       expect(config.getRootPath).toHaveBeenCalledTimes(1);
+      expect(mockMakeLogDir).toHaveBeenCalledTimes(1);
       expect(logPath).toEqual(
-        path.join(
-          configPath,
-          `${data.key}_${date.getTime()}.${cmdCtrl.LOG_EXT}`,
-        ),
+        path.join(configPath, `${data.key}_${uuidRet}.${cmdCtrl.LOG_EXT}`),
       );
     });
+  });
+
+  describe('makeLogDir', () => {
+    test('Make log dir', async () => {});
   });
 });
