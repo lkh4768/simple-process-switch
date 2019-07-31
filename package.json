@@ -4,19 +4,18 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "test": "NODE_ENV=development jest",
-    "test:report": "NODE_ENV=development npm run test -- --coverage",
+    "test": "NODE_ENV=test jest",
+    "test:report": "NODE_ENV=test npm run test -- --coverage",
     "lint": "eslint src",
     "lint:report": "npm run lint -- -f json -o ./reports/lint/report.json",
-    "git:commit": "npm run lint && npm test && git add --all && git commit"
+    "git:commit": "npm run lint && npm test && git add --all && git commit",
+    "start:dev": "NODE_ENV=development node src/index.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lkh4768/simple-process-switch.git"
   },
-  "keywords": [
-    "node"
-  ],
+  "keywords": ["node"],
   "author": "kihyeon lee",
   "license": "MIT",
   "bugs": {
@@ -34,9 +33,7 @@
   },
   "jest": {
     "testResultsProcessor": "jest-sonar-reporter",
-    "coverageReporters": [
-      "lcov"
-    ],
+    "coverageReporters": ["lcov"],
     "coverageDirectory": "reports/unittest/coverage"
   },
   "jestSonar": {
