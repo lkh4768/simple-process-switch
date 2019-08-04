@@ -1,4 +1,7 @@
 const childProcess = require('child_process');
+const {promises: fsPromises} = require('fs');
+const _ = require('lodash');
+
 const command = require('../command');
 const log = require('../log');
 
@@ -22,4 +25,19 @@ exports.runByKey = async (cmd, key) => {
     stdio: [0, logFd, logFd],
     detached: true,
   });
+  await exports.savePid(subProcess.pid);
 };
+
+exports.savePid = async pid => {
+  if (!_.isInteger(pid)) {
+    throw new Error('The pid is not integer');
+  }
+
+  // get pid file path
+  const pidFilePath = exports.getPidFilePath();
+
+  // append pid in pid file
+  await fsPromises.appendFile(pidFilePath, pid);
+};
+
+exports.getPidFilePath = () => {};

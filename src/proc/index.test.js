@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const childProcess = require('child_process');
+const {promises: fsPromises} = require('fs');
 
 const proc = require('./index');
 const command = require('../command');
@@ -73,12 +74,50 @@ describe('proc', () => {
       const mockSpawn = jest
         .spyOn(childProcess, 'spawn')
         .mockReturnValue(expectedRet);
+      const mockSavePid = jest.spyOn(proc, 'savePid').mockResolvedValue();
 
       await proc.runByKey(data.key, commands);
 
       expect(command.parseCmdToArgsOfSpawn).toHaveBeenCalledTimes(1);
       expect(log.openLogFileUsingKey).toHaveBeenCalledTimes(1);
       expect(mockSpawn).toHaveBeenCalledTimes(1);
+      expect(mockSavePid).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('savePid', () => {
+    const notIntList = [
+      '',
+      'str',
+      new Date(),
+      [],
+      true,
+      false,
+      () => {},
+      null,
+      undefined,
+    ];
+
+    test('If pid is not integer, throw error', () => {
+      for (const notInt of notIntList) {
+        expect(proc.savePid(notInt)).rejects.toThrow(Error);
+      }
+    });
+
+    test('Write pid in pid file', async () => {
+      const pid = 1;
+
+      const mockGetPidFilePath = jest
+        .spyOn(proc, 'getPidFilePath')
+        .mockReturnValue('path');
+      const mockAppendFile = jest
+        .spyOn(fsPromises, 'appendFile')
+        .mockResolvedValue();
+
+      await proc.savePid(pid);
+
+      expect(mockGetPidFilePath).toHaveBeenCalledTimes(1);
+      expect(mockAppendFile).toHaveBeenCalledTimes(1);
     });
   });
 });
